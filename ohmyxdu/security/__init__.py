@@ -10,6 +10,7 @@ from ohmyxdu.security.chacha20poly1305 import ChaCha20Poly1305, TagInvalidExcept
 def pad(data: bytes) -> bytes:
     """
     数据定长填充
+
     :param data:
     :return:
     """
@@ -22,6 +23,7 @@ def pad(data: bytes) -> bytes:
 def unpad(data: bytes) -> bytes:
     """
     数据定长解除填充
+
     :param data:
     :return:
     """
@@ -33,6 +35,7 @@ def unpad(data: bytes) -> bytes:
 def kdf(base: bytes) -> bytes:
     """
     密钥派生 (Key Derivation Function)
+
     :param base: 任意长字节串
     :return: 长32的字节串
     """
@@ -46,6 +49,7 @@ def kdf(base: bytes) -> bytes:
 def encode_password(plain_password: str, username: str) -> str:
     """
     加密本地密码
+
     :param plain_password: 明文密码
     :param username: 用户名
     :return:
@@ -64,6 +68,7 @@ def encode_password(plain_password: str, username: str) -> str:
 def decode_password(cipher_password: str, username: str) -> str:
     """
     解密本地密码
+
     :param cipher_password: 明文密码
     :param username: 用户名
     :return:
