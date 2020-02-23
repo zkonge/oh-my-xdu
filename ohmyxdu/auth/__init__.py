@@ -1,8 +1,9 @@
 from typing import Any, Dict, Optional
 
+from loguru import logger
 from requests import Session
 
-from ohmyxdu import CONFIG, logger
+from ohmyxdu import CONFIG
 from ohmyxdu.security import decode_password
 from ohmyxdu.utils.data_structure import Secret
 
