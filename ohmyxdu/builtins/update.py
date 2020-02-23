@@ -1,6 +1,5 @@
 from typing import Dict, NamedTuple
 from base64 import b64decode
-from hashlib import sha1
 
 from loguru import logger
 from requests import get
@@ -16,7 +15,6 @@ class OnlinePluginInvalidException(Exception):
 
 class PluginInfo(NamedTuple):
     plugin_name: str
-    plugin_sha1: str
     plugin_blob_url: str
 
 
@@ -54,7 +52,6 @@ def get_online_plugin_info() -> Dict[str, PluginInfo]:
     for plugin in plugins:
         plugin_name = plugin['path'][:-3] if plugin['path'].endswith('.py') else plugin['path']
         ret[plugin_name] = PluginInfo(plugin_name=plugin_name,
-                                      plugin_sha1=plugin['sha'],
                                       plugin_blob_url=plugin['url'])
 
     return ret
@@ -84,16 +81,12 @@ def update():
 
     for plugin_path in plugins_path.glob('*.py'):
         plugin_name = plugin_path.stem
-        plugin_sha1 = sha1(plugin_path.read_bytes()).hexdigest()
 
         local_plugins[plugin_name] = PluginInfo(plugin_name=plugin_name,
-                                                plugin_sha1=plugin_sha1,
                                                 plugin_blob_url='')
     logger.debug(f'本地插件:{local_plugins}')
 
     for key in online_plugins:
-        if key in local_plugins and online_plugins[key].plugin_sha1 == local_plugins[key].plugin_sha1:
-            continue
         logger.info(f'更新{online_plugins[key].plugin_name}...')
 
         content = get_online_plugin_content(online_plugins[key])
