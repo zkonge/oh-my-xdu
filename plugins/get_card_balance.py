@@ -1,3 +1,4 @@
+from loguru import logger
 from ohmyxdu.auth.wx import WXAuth
 
 

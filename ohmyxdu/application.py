@@ -3,11 +3,11 @@ from sys import path
 from pathlib import Path
 from importlib import import_module
 
+from loguru import logger
 from toml import loads
 from defopt import run
 
 import ohmyxdu
-from ohmyxdu import logger
 
 
 class Application:
@@ -36,7 +36,7 @@ class Application:
         if current_path_str not in path:
             path.append(current_path_str)
 
-        for plugin_path in current_path.glob('*.py'):
+        for plugin_path in current_path.glob('*.py'):  # TODO:增加模块插件（文件夹）的支持
             plugin_name = plugin_path.stem
             module = import_module(f'{plugin_name}')
             try:

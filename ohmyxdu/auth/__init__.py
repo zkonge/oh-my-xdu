@@ -11,6 +11,7 @@ __all__ = ('Auth',)
 credentials: Dict[str, Any] = CONFIG['CREDENTIALS']
 
 
+# TODO:独立验证模块
 class Auth(Session):
     """抽象验证模型"""
 

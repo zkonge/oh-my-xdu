@@ -2,7 +2,8 @@ from typing import Any, Dict, Optional
 from json import dumps
 from hashlib import md5
 
-from ohmyxdu import logger
+from loguru import logger
+
 from ohmyxdu.auth import Auth
 from ohmyxdu.utils import timestamp
 

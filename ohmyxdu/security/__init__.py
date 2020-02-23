@@ -3,7 +3,8 @@ from hashlib import blake2s
 from secrets import token_bytes
 from base64 import b64encode, b64decode
 
-from ohmyxdu import logger
+from loguru import logger
+
 from ohmyxdu.security.chacha20poly1305 import ChaCha20Poly1305, TagInvalidException
 
 

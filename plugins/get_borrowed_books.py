@@ -1,7 +1,8 @@
 from typing import Optional
 from itertools import count
 
-from ohmyxdu import logger
+from loguru import logger
+
 from ohmyxdu.auth.wx import WXAuth
 
 SERVICE_URL = 'http://202.117.121.7:8080/oaCampus/library/getReturn.do'
@@ -13,6 +14,7 @@ def get_borrowed_books(*, limit: Optional[int] = None):
 
     :param limit: 指定输出数量
     """
+
     token = WXAuth()
 
     if limit is None:

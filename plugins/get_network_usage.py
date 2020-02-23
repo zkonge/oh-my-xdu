@@ -1,8 +1,8 @@
 from typing import List, NamedTuple
 
+from loguru import logger
 from parsel import Selector
 
-from ohmyxdu import logger
 from ohmyxdu.auth.zfw import ZFWAuth
 
 

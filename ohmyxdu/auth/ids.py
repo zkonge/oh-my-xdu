@@ -1,6 +1,6 @@
+from loguru import logger
 from parsel import Selector
 
-from ohmyxdu import logger
 from ohmyxdu.auth import Auth
 
 

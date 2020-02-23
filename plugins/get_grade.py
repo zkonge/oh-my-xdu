@@ -2,7 +2,8 @@ from typing import Optional, NamedTuple
 from json import dumps
 from collections import defaultdict
 
-from ohmyxdu import logger
+from loguru import logger
+
 from ohmyxdu.auth.ids import IDSAuth
 
 BASE_URL = 'http://ehall.xidian.edu.cn'
@@ -22,6 +23,7 @@ def get_grade(*, year_semester: Optional[str] = None):
 
     :param year_semester: 例如："2019-2020-1" 为2019学年第一学期
     """
+
     token = IDSAuth(SERVICE_URL)
     query = []
 
