@@ -18,7 +18,7 @@ def pad(data: bytes) -> bytes:
 
     # 真的有人会用32字节长的密码吗
     n = 32 - (len(data) % 32)
-    return data + bytes([n]) * n
+    return data + bytes((n,)) * n
 
 
 def unpad(data: bytes) -> bytes:
@@ -38,7 +38,7 @@ def kdf(base: bytes) -> bytes:
     密钥派生 (Key Derivation Function)
 
     :param base: 任意长字节串
-    :return: 长32的字节串
+    :return: 长度为32的字节串
     """
 
     mac = getnode()
