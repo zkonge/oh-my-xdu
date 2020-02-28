@@ -94,9 +94,12 @@ def get_start_time(token: IDSAuth, year_semester: YearSemester) -> datetime:
     return datetime.strptime(resp.json()['datas']['cxjcs']['rows'][0]['XQKSRQ'], '%Y-%m-%d %H:%M:%S')
 
 
-def get_class_schedule(token: IDSAuth, year_semester: YearSemester) -> ClassSchedule:
+def get_class_schedule(token: IDSAuth, year_semester: YearSemester) -> ClassSchedule:  # TODO: 更换对第三方更友好的参数
     """
     获取指定学年课程表
+
+    如果是把 oh-my-xdu 作为库来调用，并且只想获取课程表信息，
+    推荐直接使用本函数。
 
     :param token: IDS令牌
     :param year_semester: 学年学期

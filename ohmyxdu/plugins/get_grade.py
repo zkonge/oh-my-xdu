@@ -1,4 +1,4 @@
-from typing import Optional, NamedTuple
+from typing import Optional, NamedTuple, List, DefaultDict
 from json import dumps
 from collections import defaultdict
 
@@ -17,7 +17,7 @@ class Grade(NamedTuple):
     grade_point: Optional[float]
 
 
-def get_grade(*, year_semester: Optional[str] = None):
+def get_grade(*, year_semester: Optional[str] = None) -> DefaultDict[str, List[Grade]]:
     """
     获取指定学年成绩，默认获取所有
 
@@ -49,9 +49,11 @@ def get_grade(*, year_semester: Optional[str] = None):
         grades[course['XNXQDM_DISPLAY']].append(Grade(course['XSKCM'], course['ZCJ'], course['XFJD']))
 
     for year_semester in grades.keys():
-        print(f'{year_semester}:')
+        logger.success(f'{year_semester}:')
         for grade in grades[year_semester]:
             if grade.grade_point is not None:
-                print(f'\t{grade.course_name}:{grade.score}({grade.grade_point})')
+                logger.success(f'\t{grade.course_name}:{grade.score}({grade.grade_point})')
             else:
-                print(f'\t{grade.course_name}:{grade.score}')
+                logger.success(f'\t{grade.course_name}:{grade.score}')
+
+    return grades
