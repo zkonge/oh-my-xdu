@@ -84,5 +84,4 @@ def decode_password(cipher_password: str, username: str) -> str:
     try:
         return unpad(box.open(nonce, cipher_password)).decode()
     except TagInvalidException:
-        logger.error('存储密码解密失败，需要重新输入密码')
-        raise TagInvalidException
+        raise TagInvalidException('存储密码解密失败，需要重新输入密码')

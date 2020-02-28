@@ -12,7 +12,7 @@ def get_config() -> dict:
     获取全局配置
 
     提示：不要直接使用config中的 set_config 修改全局配置，
-    持久化请修改直接修改 get_config 结果并调用 OMX 对象的 dump_config_file
+    持久化请直接修改 get_config 并调用 OMX 对象的 dump_config_file
     :return: 含有全局配置信息的 dict
     """
 
