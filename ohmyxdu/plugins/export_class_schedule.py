@@ -2,7 +2,8 @@ from typing import Optional, NamedTuple
 from pathlib import Path
 from datetime import datetime, timedelta
 
-from ohmyxdu import logger
+from loguru import logger
+
 from ohmyxdu.auth.ids import IDSAuth
 from ohmyxdu.utils.icalendar_helper import ClassSchedule
 
@@ -43,6 +44,7 @@ def get_semester_code(year_semester: YearSemester) -> str:
     >>> get_semester_code(YearSemester(2019,1))
     '2019-2020-1'
     """
+
     return f'{year_semester.school_year}-{year_semester.school_year + 1}-{year_semester.semester}'
 
 
@@ -53,6 +55,7 @@ def get_latest_year_semester(token: IDSAuth) -> YearSemester:
     :param token: IDS令牌
     :return:
     """
+
     # 获取学年学期
     resp = token.get(YEAR_SEMESTER_URL)
 
@@ -69,6 +72,7 @@ def clock_to_timedelta(clock: str) -> timedelta:
     >>> clock_to_timedelta('18:18')
     datetime.timedelta(seconds=65880)
     """
+
     hours, minutes = clock.split(':')
     return timedelta(hours=int(hours), minutes=int(minutes))
 
@@ -81,6 +85,7 @@ def get_start_time(token: IDSAuth, year_semester: YearSemester) -> datetime:
     :param year_semester: 学年学期
     :return: 该学年开始时间
     """
+
     semester_code = get_semester_code(year_semester)
 
     post_data = {'XN': semester_code[:-2], 'XQ': semester_code[-1:]}
@@ -89,14 +94,18 @@ def get_start_time(token: IDSAuth, year_semester: YearSemester) -> datetime:
     return datetime.strptime(resp.json()['datas']['cxjcs']['rows'][0]['XQKSRQ'], '%Y-%m-%d %H:%M:%S')
 
 
-def get_class_schedule(token: IDSAuth, year_semester: YearSemester) -> ClassSchedule:
+def get_class_schedule(token: IDSAuth, year_semester: YearSemester) -> ClassSchedule:  # TODO: 更换对第三方更友好的参数
     """
     获取指定学年课程表
+
+    如果是把 oh-my-xdu 作为库来调用，并且只想获取课程表信息，
+    推荐直接使用本函数。
 
     :param token: IDS令牌
     :param year_semester: 学年学期
     :return: 课程表
     """
+
     post_data = {'XNXQDM': get_semester_code(year_semester)}
 
     resp = token.post(CLASS_SCHEDULE_URL, data=post_data)
@@ -140,6 +149,7 @@ def export_class_schedule(*,
     :param school_year: 学年，默认为当前学年
     :param semester: 学期，可为 1（上学期）或 2（下学期），默认为当前学期
     """
+
     token = IDSAuth(SERVICE_URL)
 
     if school_year and semester:

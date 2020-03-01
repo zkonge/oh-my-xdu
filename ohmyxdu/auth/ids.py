@@ -1,11 +1,12 @@
+from loguru import logger
 from parsel import Selector
 
-from ohmyxdu import logger
 from ohmyxdu.auth import Auth
 
 
 class IDSAuth(Auth):
     """统一身份验证"""
+
     AUTH_NAME = 'IDS'
     AUTH_URL = 'http://ids.xidian.edu.cn/authserver/login'
 

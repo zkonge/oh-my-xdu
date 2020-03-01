@@ -3,25 +3,28 @@ from hashlib import blake2s
 from secrets import token_bytes
 from base64 import b64encode, b64decode
 
-from ohmyxdu import logger
+from loguru import logger
+
 from ohmyxdu.security.chacha20poly1305 import ChaCha20Poly1305, TagInvalidException
 
 
 def pad(data: bytes) -> bytes:
     """
     数据定长填充
+
     :param data:
     :return:
     """
 
     # 真的有人会用32字节长的密码吗
     n = 32 - (len(data) % 32)
-    return data + bytes([n]) * n
+    return data + bytes((n,)) * n
 
 
 def unpad(data: bytes) -> bytes:
     """
     数据定长解除填充
+
     :param data:
     :return:
     """
@@ -33,8 +36,9 @@ def unpad(data: bytes) -> bytes:
 def kdf(base: bytes) -> bytes:
     """
     密钥派生 (Key Derivation Function)
+
     :param base: 任意长字节串
-    :return: 长32的字节串
+    :return: 长度为32的字节串
     """
 
     mac = getnode()
@@ -46,6 +50,7 @@ def kdf(base: bytes) -> bytes:
 def encode_password(plain_password: str, username: str) -> str:
     """
     加密本地密码
+
     :param plain_password: 明文密码
     :param username: 用户名
     :return:
@@ -64,6 +69,7 @@ def encode_password(plain_password: str, username: str) -> str:
 def decode_password(cipher_password: str, username: str) -> str:
     """
     解密本地密码
+
     :param cipher_password: 明文密码
     :param username: 用户名
     :return:
@@ -78,5 +84,4 @@ def decode_password(cipher_password: str, username: str) -> str:
     try:
         return unpad(box.open(nonce, cipher_password)).decode()
     except TagInvalidException:
-        logger.error('存储密码解密失败，需要重新输入密码')
-        raise TagInvalidException
+        raise TagInvalidException('存储密码解密失败，需要重新输入密码')

@@ -1,8 +1,9 @@
-from typing import Optional, NamedTuple
+from typing import Optional, NamedTuple, List, DefaultDict
 from json import dumps
 from collections import defaultdict
 
-from ohmyxdu import logger
+from loguru import logger
+
 from ohmyxdu.auth.ids import IDSAuth
 
 BASE_URL = 'http://ehall.xidian.edu.cn'
@@ -16,12 +17,13 @@ class Grade(NamedTuple):
     grade_point: Optional[float]
 
 
-def get_grade(*, year_semester: Optional[str] = None):
+def get_grade(*, year_semester: Optional[str] = None) -> DefaultDict[str, List[Grade]]:
     """
     获取指定学年成绩，默认获取所有
 
     :param year_semester: 例如："2019-2020-1" 为2019学年第一学期
     """
+
     token = IDSAuth(SERVICE_URL)
     query = []
 
@@ -47,9 +49,11 @@ def get_grade(*, year_semester: Optional[str] = None):
         grades[course['XNXQDM_DISPLAY']].append(Grade(course['XSKCM'], course['ZCJ'], course['XFJD']))
 
     for year_semester in grades.keys():
-        print(f'{year_semester}:')
+        logger.success(f'{year_semester}:')
         for grade in grades[year_semester]:
             if grade.grade_point is not None:
-                print(f'\t{grade.course_name}:{grade.score}({grade.grade_point})')
+                logger.success(f'\t{grade.course_name}:{grade.score}({grade.grade_point})')
             else:
-                print(f'\t{grade.course_name}:{grade.score}')
+                logger.success(f'\t{grade.course_name}:{grade.score}')
+
+    return grades
