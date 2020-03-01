@@ -9,8 +9,7 @@ def show():
     app = get_current_omx()
 
     min_width = max(len(f.__name__) for f in app.plugins) + 1
-    print('插件名称'.center(min_width), '插件介绍'.center(min_width))
-    print('=' * min_width * 2)
+    print('插件名称'.ljust(min_width), '插件介绍')
     for plugin in app.plugins:
         parsed = _create_parser(plugin)  # TODO: 性能提升
-        print(plugin.__name__.replace('_', '-').ljust(min_width), parsed.description.ljust(min_width))
+        print(plugin.__name__.replace('_', '-').ljust(min_width), parsed.description)

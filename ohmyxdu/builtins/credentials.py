@@ -18,8 +18,7 @@ def credentials(item: str, auth_name: Optional[str] = None):
     if auth_name is None or auth_name.upper() == 'IDS':
         config_to_modify = auth_config
     else:
-        config_to_modify = auth_config.get(auth_name.upper(), dict())
-    print(config_to_modify, auth_name)
+        config_to_modify = auth_config.get(auth_name.upper(), {})
 
     if item.upper() == 'PASSWORD':
         # 密码必须以安全的方式输入，如想从程序中调用，请通过 ohmyxdu.security.encode_password 直接保存

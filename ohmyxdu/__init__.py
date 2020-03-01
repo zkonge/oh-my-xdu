@@ -1,10 +1,10 @@
 from typing import List, Callable, Optional
+from os import environ
 from sys import path
 from copy import deepcopy
 from pathlib import Path
 from importlib import import_module
 
-from loguru import logger
 from toml import dumps, loads
 from defopt import run
 
@@ -12,6 +12,15 @@ from ohmyxdu.globals import get_config, set_config, set_current_omx
 
 __all__ = ('__version__', 'OMX')
 __version__ = '0.1.0'
+
+debug = bool(environ.get('DEBUG'))
+if not debug and not environ.get('LOGURU_LEVEL'):
+    # 正式环境关掉 DEBUG 日志
+    environ['LOGURU_LEVEL'] = 'INFO'
+
+# 要为调整日志等级违反一下 PEP 8
+# TODO:重写log handler
+from loguru import logger
 
 
 class OMX:
