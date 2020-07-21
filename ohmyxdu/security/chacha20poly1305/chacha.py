@@ -65,7 +65,7 @@ class ChaCha:
     def chacha_block(cls, key: Tuple[int], counter: int, nonce: Tuple[int], rounds: int) -> Tuple[int]:
         """Generate a state of a single block"""
 
-        state: Tuple[int, ...] = *cls.constants, *key, counter, *nonce
+        state: Tuple[int, ...] = (*cls.constants, *key, counter, *nonce)
 
         working_state: List[int] = list(state)
 
