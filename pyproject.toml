@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "oh-my-xdu"
-version = "0.1.0"
+version = "0.1.1"
 description = "Useful tools for XDU students"
 authors = ["zkonge <zkonge@outlook.com>"]
 license = "LGPL-3.0-or-later"
@@ -12,12 +12,12 @@ omx = 'ohmyxdu.console:main'
 
 [tool.poetry.dependencies]
 python = "^3.7"
-requests = "^2.23.0"
-parsel = "^1.5.2"
-loguru = "^0.4.1"
-icalendar = "^4.0.4"
-toml = "^0.10.0"
-defopt = "^5.1.0"
+requests = "^2.24.0"
+parsel = "^1.6.0"
+loguru = "^0.5.1"
+icalendar = "^4.0.6"
+toml = "^0.10.1"
+defopt = "^6.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
