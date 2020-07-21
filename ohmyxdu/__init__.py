@@ -11,7 +11,7 @@ from defopt import run
 from ohmyxdu.globals import get_config, set_config, set_current_omx
 
 __all__ = ('__version__', 'OMX')
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 debug = bool(environ.get('DEBUG'))
 if not debug and not environ.get('LOGURU_LEVEL'):
