@@ -4,33 +4,8 @@ from secrets import token_bytes
 from base64 import b64encode, b64decode
 
 from loguru import logger
-
-from ohmyxdu.security.chacha20poly1305 import ChaCha20Poly1305, TagInvalidException
-
-
-def pad(data: bytes) -> bytes:
-    """
-    数据定长填充
-
-    :param data:
-    :return:
-    """
-
-    # 真的有人会用32字节长的密码吗
-    n = 32 - (len(data) % 32)
-    return data + bytes((n,)) * n
-
-
-def unpad(data: bytes) -> bytes:
-    """
-    数据定长解除填充
-
-    :param data:
-    :return:
-    """
-
-    # 有AEAD就不去检查unpad操作是否合法了
-    return data[:-data[-1]]
+from Crypto.Cipher import ChaCha20_Poly1305
+from Crypto.Util.Padding import pad, unpad
 
 
 def kdf(base: bytes) -> bytes:
@@ -60,8 +35,9 @@ def encode_password(plain_password: str, username: str) -> str:
     plain_password = plain_password.encode()
     nonce = token_bytes(12)
 
-    box = ChaCha20Poly1305(key)
-    r = nonce + box.seal(nonce, pad(plain_password))
+    box = ChaCha20_Poly1305.new(key=key, nonce=nonce)
+    cipher = box.encrypt_and_digest(pad(plain_password, block_size=32))
+    r = nonce + cipher[0] + cipher[1]
 
     return b64encode(r).decode()
 
@@ -77,11 +53,11 @@ def decode_password(cipher_password: str, username: str) -> str:
 
     key = kdf(username.encode())
     cipher_password = b64decode(cipher_password)
-    nonce, cipher_password = cipher_password[:12], cipher_password[12:]
+    nonce, cipher, mac = cipher_password[:12], cipher_password[12:-16], cipher_password[-16:]
 
-    box = ChaCha20Poly1305(key)
+    box = ChaCha20_Poly1305.new(key=key, nonce=nonce)
 
     try:
-        return unpad(box.open(nonce, cipher_password)).decode()
-    except TagInvalidException:
-        raise TagInvalidException('存储密码解密失败，需要重新输入密码')
+        return unpad(box.decrypt_and_verify(cipher_password, mac), block_size=32).decode()
+    except ValueError:
+        raise ValueError('存储密码解密失败，需要重新输入密码')
