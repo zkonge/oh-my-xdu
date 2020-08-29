@@ -32,6 +32,7 @@ def credentials(item: str, auth_name: Optional[str] = None):
         while not config_to_modify[item.upper()]:
             config_to_modify[item.upper()] = input(f'{item}:').strip()
 
-    auth_config[auth_name.upper()] = config_to_modify
+    if auth_name is not None:
+        auth_config[auth_name.upper()] = config_to_modify
 
     get_current_omx().dump_config_file()

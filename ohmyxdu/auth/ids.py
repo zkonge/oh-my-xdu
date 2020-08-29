@@ -1,4 +1,5 @@
-from secrets import token_bytes
+from secrets import token_urlsafe
+from base64 import b64encode
 
 from loguru import logger
 from parsel import Selector
@@ -21,8 +22,8 @@ def encrypt(key: bytes, value: bytes):
     # 别学这个登录流程，正确方法可以去看一下非对称密码。
     # 如果需在不可信信道传递信息的话请优先考虑 TLS1.3+(HTTPS), Noise Protocol 等专业设施
     # 其实这里只要有一处随机即可，两次随机并不能有效增加安全性
-    box = AES.new(key=key, mode=AES.MODE_CBC, iv=token_bytes(16))
-    return box.encrypt(pad(token_bytes(64) + value, block_size=16))
+    box = AES.new(key=key, mode=AES.MODE_CBC, iv=token_urlsafe(12).encode())  # IDS不接受非可见字符为向量（什么奇葩设计
+    return b64encode(box.encrypt(pad(token_urlsafe(48).encode() + value, block_size=16)))
 
 
 class IDSAuth(Auth):
@@ -49,12 +50,12 @@ class IDSAuth(Auth):
         hidden_tags = html.css('input[type=hidden]')
 
         data = {'username': self.username, 'password': self.password}
-        data.update({tag.attrib['name']: tag.attrib['value'] for tag in hidden_tags})
+        data.update({tag.attrib['name']: tag.attrib['value'] for tag in hidden_tags if 'name' in tag.attrib})
 
         logger.debug(data)
 
         key = html.css('input#pwdDefaultEncryptSalt').attrib['value']
-        data['password'] = encrypt(str(data['password']).encode(), key.encode())
+        data['password'] = encrypt(key.encode(), str(data['password']).encode())
 
         self.post(self.AUTH_URL, params=params, data=data)
         self.get(service_url)

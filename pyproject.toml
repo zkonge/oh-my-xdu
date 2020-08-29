@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "oh-my-xdu"
-version = "0.1.1"
+version = "0.1.2"
 description = "Useful tools for XDU students"
 authors = ["zkonge <zkonge@outlook.com>"]
 license = "LGPL-3.0-or-later"

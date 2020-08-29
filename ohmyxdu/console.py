@@ -21,3 +21,7 @@ def main():
         app.bootstrap()
 
     app.run()
+
+
+if __name__ == '__main__':
+    main()

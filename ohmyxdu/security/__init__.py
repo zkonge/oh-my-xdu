@@ -58,6 +58,6 @@ def decode_password(cipher_password: str, username: str) -> str:
     box = ChaCha20_Poly1305.new(key=key, nonce=nonce)
 
     try:
-        return unpad(box.decrypt_and_verify(cipher_password, mac), block_size=32).decode()
+        return unpad(box.decrypt_and_verify(cipher, mac), block_size=32).decode()
     except ValueError:
         raise ValueError('存储密码解密失败，需要重新输入密码')
