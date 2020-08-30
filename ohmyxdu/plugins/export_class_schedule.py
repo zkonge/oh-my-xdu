@@ -18,12 +18,7 @@ MORNING_TIME = [
     ('8:30', '10:05'),
     ('10:25', '12:00')
 ]
-SUMMER_TIME = MORNING_TIME + [
-    ('14:30', '16:05'),
-    ('16:25', '18:00'),
-    ('19:30', '21:05')
-]
-WINTER_TIME = MORNING_TIME + [
+CLASS_TIME = MORNING_TIME + [
     ('14:00', '15:35'),
     ('15:55', '17:30'),
     ('19:00', '20:35')
@@ -123,10 +118,10 @@ def get_class_schedule(token: IDSAuth, year_semester: YearSemester) -> ClassSche
             course_sequence_start = int(course['KSJC'])
 
             course_date = semester_start_time + timedelta(week_count * 7 + day_count)
-            if 5 <= course_date.month < 10:
-                timetable = SUMMER_TIME
-            else:
-                timetable = WINTER_TIME
+
+            # 2020-04-23 西电发[2020]13号 统一全年作息时间
+            timetable = CLASS_TIME
+
             course_start_time, course_end_time = timetable[course_sequence_start // 2]
             course_start_time = course_date + clock_to_timedelta(course_start_time)
             course_end_time = course_date + clock_to_timedelta(course_end_time)
