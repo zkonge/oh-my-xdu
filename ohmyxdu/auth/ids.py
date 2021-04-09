@@ -47,14 +47,14 @@ class IDSAuth(Auth):
         resp = self.get(self.AUTH_URL, params=params)
 
         html = Selector(resp.text)
-        hidden_tags = html.css('input[type=hidden]')
+        hidden_tags = html.css('.loginFromClass input[type=hidden]')
 
-        data = {'username': self.username, 'password': self.password}
-        data.update({tag.attrib['name']: tag.attrib['value'] for tag in hidden_tags if 'name' in tag.attrib})
+        data = {tag.attrib['name']: tag.attrib.get('value') for tag in hidden_tags if 'name' in tag.attrib}
+        data.update({'username': self.username, 'password': self.password})
 
         logger.debug(data)
 
-        key = html.css('input#pwdDefaultEncryptSalt').attrib['value']
+        key = html.css('input#pwdEncryptSalt').attrib['value']
         data['password'] = encrypt(key.encode(), str(data['password']).encode())
 
         self.post(self.AUTH_URL, params=params, data=data)
