@@ -11,9 +11,9 @@ def get_card_balance() -> int:
 
     token = WXAuth()
 
-    resp = token.post('http://202.117.121.7:8080/infoCampus/playCampus/getAllPurposeCard.do')
+    resp = token.post("http://202.117.121.7:8080/infoCampus/playCampus/getAllPurposeCard.do")
 
-    wallet = resp.json()['allPurposeCardVO']['cardGeneralInfo'][0]['value']
-    logger.success(f'一卡通余额:￥{int(wallet) / 100:.2f}')
+    wallet = resp.json()["allPurposeCardVO"]["cardGeneralInfo"][0]["value"]
+    logger.success(f"一卡通余额:￥{int(wallet) / 100:.2f}")
 
     return int(wallet)

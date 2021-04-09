@@ -1,4 +1,4 @@
-__all__ = ('Secret',)
+__all__ = ("Secret",)
 
 
 class Secret:

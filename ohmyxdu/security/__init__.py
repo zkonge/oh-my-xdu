@@ -18,8 +18,8 @@ def kdf(base: bytes) -> bytes:
 
     mac = getnode()
     if (mac >> 40) & 1:
-        logger.warning('似乎无法获取计算机MAC地址，密码验证可能会失败')
-    return blake2s(base, key=mac.to_bytes(32, 'big')).digest()
+        logger.warning("似乎无法获取计算机MAC地址，密码验证可能会失败")
+    return blake2s(base, key=mac.to_bytes(32, "big")).digest()
 
 
 def encode_password(plain_password: str, username: str) -> str:
@@ -60,4 +60,4 @@ def decode_password(cipher_password: str, username: str) -> str:
     try:
         return unpad(box.decrypt_and_verify(cipher, mac), block_size=32).decode()
     except ValueError:
-        raise ValueError('存储密码解密失败，需要重新输入密码')
+        raise ValueError("存储密码解密失败，需要重新输入密码")

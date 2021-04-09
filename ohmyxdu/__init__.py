@@ -10,13 +10,13 @@ from defopt import run
 
 from ohmyxdu.globals import get_config, set_config, set_current_omx
 
-__all__ = ('__version__', 'OMX')
-__version__ = '0.1.3'
+__all__ = ("__version__", "OMX")
+__version__ = "0.1.3"
 
-debug = bool(environ.get('DEBUG'))
-if not debug and not environ.get('LOGURU_LEVEL'):
+debug = bool(environ.get("DEBUG"))
+if not debug and not environ.get("LOGURU_LEVEL"):
     # 正式环境关掉 DEBUG 日志
-    environ['LOGURU_LEVEL'] = 'INFO'
+    environ["LOGURU_LEVEL"] = "INFO"
 
 # 要为调整日志等级违反一下 PEP 8
 # TODO:重写log handler
@@ -63,16 +63,16 @@ class OMX:
 
         lib_path = Path(__file__).parent
 
-        builtin_path = lib_path / 'builtins'
-        plugins_path = lib_path / 'plugins'
+        builtin_path = lib_path / "builtins"
+        plugins_path = lib_path / "plugins"
 
         self.load_plugin_here(builtin_path)  # 内建插件不会有返回值，目前其对应的函数不应该直接被调用
         self.load_plugin_here(plugins_path)
 
-        logger.debug(f'已加载插件{self.plugins}')
+        logger.debug(f"已加载插件{self.plugins}")
 
     @staticmethod
-    def from_config_file(config_path: Path) -> 'OMX':
+    def from_config_file(config_path: Path) -> "OMX":
         """
         从指定配置文件初始化 OMX
 
@@ -124,13 +124,13 @@ class OMX:
         if current_path_str not in path:
             path.append(current_path_str)
 
-        for plugin_path in current_path.glob('*.py'):  # TODO: 增加模块插件（文件夹）的支持
+        for plugin_path in current_path.glob("*.py"):  # TODO: 增加模块插件（文件夹）的支持
             plugin_name = plugin_path.stem
-            module = import_module(f'{plugin_name}')
+            module = import_module(f"{plugin_name}")
             try:
                 self.plugins.append(getattr(module, plugin_name))
             except AttributeError:
-                logger.warning(f'插件 {plugin_name} 没有公开入口')
+                logger.warning(f"插件 {plugin_name} 没有公开入口")
 
     def bootstrap(self):
         """交互式初始化 OMX，写入通用配置信息"""
@@ -138,20 +138,15 @@ class OMX:
         from getpass import getpass
         from ohmyxdu.security import encode_password
 
-        print(f'oh-my-xdu {__version__} 启动配置:\n'
-              f'接下来我们要做的是:\n'
-              f'\t[1]:配置通用账号密码')
+        print(f"oh-my-xdu {__version__} 启动配置:\n" f"接下来我们要做的是:\n" f"\t[1]:配置通用账号密码")
 
         # 配置通用密码
-        username = input('学工号:').strip()
+        username = input("学工号:").strip()
         while not username:
-            username = input('学工号:').strip()
-        password = encode_password(getpass('统一身份验证密码:<输入尽可能不会回显>'), username)
+            username = input("学工号:").strip()
+        password = encode_password(getpass("统一身份验证密码:<输入尽可能不会回显>"), username)
 
-        basic_config = {'CREDENTIALS': {
-            'USERNAME': username,
-            'PASSWORD': password
-        }}
+        basic_config = {"CREDENTIALS": {"USERNAME": username, "PASSWORD": password}}
 
         config = get_config()
         config.update(basic_config)

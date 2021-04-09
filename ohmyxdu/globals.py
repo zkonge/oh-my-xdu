@@ -1,10 +1,10 @@
 from contextvars import ContextVar
 
-__all__ = ('get_config', 'set_config', 'get_current_omx', 'set_current_omx')
+__all__ = ("get_config", "set_config", "get_current_omx", "set_current_omx")
 
 # 异步隔离
-_config = ContextVar('global_config')
-_current_omx = ContextVar('public_omx')
+_config = ContextVar("global_config")
+_current_omx = ContextVar("public_omx")
 
 
 def get_config() -> dict:
@@ -19,7 +19,7 @@ def get_config() -> dict:
     try:
         return _config.get()
     except LookupError:
-        raise LookupError('全局配置文件未初始化，OMX 对象初始化了吗？')
+        raise LookupError("全局配置文件未初始化，OMX 对象初始化了吗？")
 
 
 set_config = _config.set
@@ -36,7 +36,7 @@ def get_current_omx() -> "OMX":  # TODO: 解决循环 import
     try:
         return _current_omx.get()
     except LookupError:
-        raise LookupError('当前线程上下文中的 OMX 对象未初始化')
+        raise LookupError("当前线程上下文中的 OMX 对象未初始化")
 
 
 set_current_omx = _current_omx.set

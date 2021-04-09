@@ -5,7 +5,7 @@ from loguru import logger
 
 from ohmyxdu.auth.wx import WXAuth
 
-SERVICE_URL = 'http://202.117.121.7:8080/oaCampus/library/getReturn.do'
+SERVICE_URL = "http://202.117.121.7:8080/oaCampus/library/getReturn.do"
 
 
 def get_borrowed_books(*, limit: Optional[int] = None) -> List[dict]:
@@ -19,16 +19,16 @@ def get_borrowed_books(*, limit: Optional[int] = None) -> List[dict]:
     token = WXAuth()
 
     if limit is None:
-        limit = float('inf')
+        limit = float("inf")
 
     books = []
     for offset in count(1):
-        data = token.post(SERVICE_URL, data={'offset': offset}).json()
+        data = token.post(SERVICE_URL, data={"offset": offset}).json()
         logger.debug(data)
-        if data['msgState'] != 1 or len(books) > limit:
+        if data["msgState"] != 1 or len(books) > limit:
             break
-        books.extend(data['list'])
-    books = books[:min(limit, len(books))]
+        books.extend(data["list"])
+    books = books[: min(limit, len(books))]
     for book in books:
         logger.success(f'应还日期:{book["returnDate"]} 《{book["title"]}》')
 

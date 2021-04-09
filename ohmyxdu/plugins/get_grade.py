@@ -6,9 +6,9 @@ from loguru import logger
 
 from ohmyxdu.auth.ids import IDSAuth
 
-BASE_URL = 'http://ehall.xidian.edu.cn'
-SERVICE_URL = BASE_URL + '/appShow?appId=4768574631264620'
-GRADE_URL = BASE_URL + '/jwapp/sys/cjcx/modules/cjcx/xscjcx.do'
+BASE_URL = "http://ehall.xidian.edu.cn"
+SERVICE_URL = BASE_URL + "/appShow?appId=4768574631264620"
+GRADE_URL = BASE_URL + "/jwapp/sys/cjcx/modules/cjcx/xscjcx.do"
 
 
 class Grade(NamedTuple):
@@ -29,31 +29,35 @@ def get_grade(*, year_semester: Optional[str] = None) -> DefaultDict[str, List[G
 
     if year_semester:
         # TODO: query builder
-        query.append({'name': 'XNXQDM', 'value': year_semester, 'linkOpt': 'and', 'builder': 'm_value_equal'})
+        query.append(
+            {"name": "XNXQDM", "value": year_semester, "linkOpt": "and", "builder": "m_value_equal"}
+        )
 
     data = {
-        'querySetting': dumps(query),
-        '*order': 'KCH,KXH',  # 按课程名，课程号排序
-        'pageSize': 1000,  # 有多少整多少.jpg
-        'pageNumber': 1
+        "querySetting": dumps(query),
+        "*order": "KCH,KXH",  # 按课程名，课程号排序
+        "pageSize": 1000,  # 有多少整多少.jpg
+        "pageNumber": 1,
     }
 
     resp = token.post(GRADE_URL, data=data)
 
-    courses = resp.json()['datas']['xscjcx']['rows']
+    courses = resp.json()["datas"]["xscjcx"]["rows"]
 
     grades = defaultdict(lambda: [])
 
     for course in courses:
         logger.debug(course)
-        grades[course['XNXQDM_DISPLAY']].append(Grade(course['XSKCM'], course['ZCJ'], course['XFJD']))
+        grades[course["XNXQDM_DISPLAY"]].append(
+            Grade(course["XSKCM"], course["ZCJ"], course["XFJD"])
+        )
 
     for year_semester in grades.keys():
-        logger.success(f'{year_semester}:')
+        logger.success(f"{year_semester}:")
         for grade in grades[year_semester]:
             if grade.grade_point is not None:
-                logger.success(f'\t{grade.course_name}:{grade.score}({grade.grade_point})')
+                logger.success(f"\t{grade.course_name}:{grade.score}({grade.grade_point})")
             else:
-                logger.success(f'\t{grade.course_name}:{grade.score}')
+                logger.success(f"\t{grade.course_name}:{grade.score}")
 
     return grades

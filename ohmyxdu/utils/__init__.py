@@ -1,6 +1,6 @@
 from time import time
 
-__all__ = ('timestamp',)
+__all__ = ("timestamp",)
 
 
 def timestamp():
