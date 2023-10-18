@@ -3,7 +3,7 @@ name = "oh-my-xdu"
 version = "0.1.4"
 description = "Useful tools for XDU students"
 authors = ["zkonge <zkonge@outlook.com>"]
-license = "LGPL-3.0-or-later"
+license = "CC0-1.0"
 packages = [
     { include = "ohmyxdu" }
 ]

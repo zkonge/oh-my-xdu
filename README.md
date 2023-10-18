@@ -2,10 +2,14 @@
 
 ![oh-my-xdu](art/ohmyxdu.svg)
 
-[![License: LGPL v3+](https://img.shields.io/badge/License-LGPL%20v3+-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+[![License: CC0 1.0 Universal](https://img.shields.io/badge/License-CC0%201.0%20Universal-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0)
 [![PyPI version](https://badge.fury.io/py/oh-my-xdu.svg)](https://badge.fury.io/py/oh-my-xdu)
 
 ✨安全，便利，高拓展性的下一代西电校园生活脚本平台
+
+# 🛑停止维护
+由于校园服务变动，本项目应该已经无法正常使用，而且作者已经毕业，故停止维护。
+项目不再使用 LGPL 3.0 协议开源，现已属于公有领域。
 
 ## 需求
 1. Python 3.7+
@@ -64,6 +68,6 @@ omx 有着齐全的代码文档与注释，使用帮助可在任意命令下添�
 [xidian-scripts](https://github.com/xdlinux/xidian-scripts) 与其中所有的贡献者们
 
 ## 许可证
-项目本体以 [LGPL 3.0](LICENSE) 许可证发布
+项目本体以 [CC0 1.0 Universal](LICENSE) 许可证发布
 
 其中艺术作品字体来自于 [Ubuntu](https://design.ubuntu.com/font/)
